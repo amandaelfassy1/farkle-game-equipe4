@@ -1,0 +1,25 @@
+html
+    head
+        title Inscription
+        include default.pug
+    body
+        include nav.pug
+        div.container
+           
+            form.form(action="/signup", method="post")
+                if alert && alert.success 
+                    div(class="alert alert-success" role="alert") #{alert.message}
+                if alert && alert.danger
+                    div(class="alert alert-danger" role="alert") #{alert.message}
+                h2 S'inscrire 
+                div.form-group
+                    label(for="Email") Adresse mail 
+                    input.form-control.border-0(type="text", name="email" placeholder="E-mail" value=(previous && previous.email || ''))
+                div.form-group
+                    label(for="username") Pseudo
+                    input.form-control.border-0(type="username", name="username" placeholder="username" value=(previous && previous.username || ''))
+                div.form-group    
+                    label(for="password") Mot de passe
+                    input.form-control.border-0(type="password", name="password" placeholder="Password" value=(previous && previous.password || ''))
+                div.form-group    
+                    input(type="submit", class="btn btn-dark btn-lg btn-block" value="Valider")

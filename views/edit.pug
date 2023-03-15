@@ -1,0 +1,35 @@
+html
+    head
+        title Modif
+        include default.pug
+    body
+        include nav.pug
+        div.container
+            form(method='POST' action='/edit/'+ edit.id)
+                h2 Profil
+                if alert && alert.success 
+                    div(class="alert alert-success" role="alert") #{alert.message}
+                if alert && alert.danger
+                    div(class="alert alert-danger" role="alert") #{alert.message}
+                div.form-group
+                    label(for="Email") Adresse mail 
+                    input.form-control.border-0(type="text", name="email" placeholder="E-mail" value=edit.email)
+                div.form-group
+                    label(for="username") Pseudo
+                    input.form-control.border-0(type="username", name="username" placeholder="username" value=edit.username)
+                div.form-group    
+                    label(for="password") Mot de passe
+                    input.form-control.border-0(type="password", name="password" placeholder="Password" value=edit.password)
+                if (user.isAdmin == true)
+                    label(for="isAdmin") Admin
+                    select#isAdmin.select.form-control.input-lg(name='isAdmin')
+                            option(value='1',selected=edit.isAdmin) Yes
+                            option(value='0' ,selected=(!edit.isAdmin)) No
+                <br>            
+                div.form-group    
+                    input(type="submit", class="btn btn-dark btn-lg btn-block" value="Valider")
+            if(edit.id==user.id)
+                form.supp(method='POST' action='/delete/'+ edit.id)
+                    button.btn.btn-danger(type='submit') Supprimer mon profil
+                
+        

@@ -1,0 +1,36 @@
+html
+    head
+        title Connexion
+        meta(charset='utf-8')
+        link(rel="stylesheet", href="/css/game.css")
+        script.
+            const username = !{JSON.stringify(username)}
+        script(src="/socket.io/socket.io.js" defer)
+        script(src="/js/game.js" defer)
+
+    body(onload='initializeDice()')
+        h1.content.header Bienvenue sur Farkle!
+        ul(class="game")
+        div.content
+            div.dice
+                img(src='/img/1.png', id='die1', data-number='0', onclick='diceClick(this)')
+                img(src='/img/2.png', id='die2', data-number='1', onclick='diceClick(this)')
+                img(src='/img/3.png', id='die3', data-number='2', onclick='diceClick(this)')
+                img(src='/img/4.png', id='die4', data-number='3', onclick='diceClick(this)')
+                img(src='/img/5.png', id='die5', data-number='4', onclick='diceClick(this)')
+                img(src='/img/6.png', id='die6', data-number='5', onclick='diceClick(this)')
+            div.content.score#row-score
+            div.players
+                div.player
+                    div.name Joueur 1
+                    div.score#player1-score 0
+                div.player
+                    div.name #{user.username}
+                    div.score#player2-score 0
+            div.turns Tour: 
+                span#turn-number 1
+            div.dice-remaining| Dés restants:
+                span#dice-remaining 6
+            div.content
+                button.button.roll.column(onclick='rollDice()', type="submit") Lancer dés
+                button.button.bank.column(onclick='bankScore()',  type="submit") S'arreter

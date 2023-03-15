@@ -1,0 +1,36 @@
+html
+    head
+        title Backoffice
+        include default.pug
+    body
+        include nav.pug
+        div.container
+            if alert && alert.success 
+                div(class="alert alert-success" role="alert") #{alert.message}
+            if alert && alert.danger
+                div(class="alert alert-danger" role="alert") #{alert.message}
+            div.content
+                h3 Liste des utilisateurs 
+                table(class="table")
+                    thead
+                        tr
+                            th.border-0 Id
+                            th.border-0 Email
+                            th.border-0 Username
+                            th.border-0 Supprimer
+                            th.border-0 Voir
+
+                    tbody
+                        each user in users
+                            tr.border-0
+                                td.border-0
+                                     a(href='/edit/'+user.id class="nav-link text-dark") #{user.id} 
+                                td.border-0 #{user.email}
+                                td.border-0 #{user.username}
+                                td.border-0 
+                                    form(action='/delete/'+user.id method="post")
+                                        button(type="submit" class="btn btn-link") Supprimer
+                                            //- i(class="far fa-trash-alt") 
+                                td.border-0
+                                    a(href='/edit/'+user.id class="nav-link text-dark")
+                                        i(class="far fa-eye")
