@@ -319,27 +319,27 @@ app.get("*", (req, res) => {
 
 io.on("connection", (socket) => {
   const username = socket.request._query["username"];
-  socket.emit("chat", {
+  socket.emit("game", {
     from: "Serveur",
-    message: `Bienvenue sur le chat ${username} ! `,
+    message: `Bienvenue sur le game ${username} ! `,
   });
 
-  socket.broadcast.emit("chat", {
+  socket.broadcast.emit("game", {
     from: "Serveur",
-    message: `${username} a rejoint le chat`,
+    message: `${username} a rejoint le game`,
   });
 
-  socket.on("chat", (data) => {
+  socket.on("game", (data) => {
     const { from, message } = data;
-    socket.broadcast.emit("chat", { from, message });
-    socket.emit("chat", { from, message });
+    socket.broadcast.emit("game", { from, message });
+    socket.emit("game", { from, message });
     console.log(data);
   });
 
   socket.on("disconnect", () => {
-    socket.broadcast.emit("chat", {
+    socket.broadcast.emit("game", {
       from: "Serveur",
-      message: `${username} a quitté le chat `,
+      message: `${username} a quitté le game `,
     });
   });
 });

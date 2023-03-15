@@ -8,7 +8,7 @@ game-node-express created by GitHub Classroom <br>
 
 ## Compilation du projet
 
-<code>npm run dev</code>
+<code>node app</code>
 
 ## Compte administrateur
 
