@@ -3,15 +3,17 @@ html
         title Connexion
         meta(charset='utf-8')
         link(rel="stylesheet", href="/css/game.css")
+        link(rel="stylesheet", href="/css/nav.css")
         script.
             const username = !{JSON.stringify(username)}
         script(src="/socket.io/socket.io.js" defer)
         script(src="/js/game.js" defer)
 
     body(onload='initializeDice()')
-        h1.content.header Bienvenue sur Farkle!
-        ul(class="game")
+        include nav.pug
         div.content
+            ul(class="game")
+            h1.content.header Bienvenue sur Farkle!
             div.dice
                 img(src='/img/1.png', id='die1', data-number='0', onclick='diceClick(this)')
                 img(src='/img/2.png', id='die2', data-number='1', onclick='diceClick(this)')

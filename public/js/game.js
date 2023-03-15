@@ -121,7 +121,7 @@ function getScore(losingDice) {
   document.getElementById("row-score").innerHTML = score;
 
   if (score == 0) {
-    alert("UH OH, we have a FARKLE! Your turn is over!");
+    alert("OOOHHH, Nous avons un FARKLE! Votre tour est fini !");
   }
 
   return score;
