@@ -1,60 +1,45 @@
 const chatUl = document.querySelector(".game");
+console.log("game!");
+
 let diceArr = [];
 let score = 0;
-let winningDice = [];
 
-// Initialization of dice in objects
 function initializeDice() {
   for (i = 0; i < 6; i++) {
     diceArr[i] = {};
-    diceArr[i].id = "die" + (i + 1).toString();
+    diceArr[i].id = "die" + String(i + 1);
     diceArr[i].value = i + 1;
-    diceArr[i].winning = false;
+    diceArr[i].clicked = 0;
   }
 }
 
+initializeDice();
+
 function rollDice() {
-  let losingDice = [];
-
   for (let i = 0; i < 6; i++) {
-    if (!diceArr[i].winning) {
-      // Only roll non-winning dice
-      losingDice.push(i);
+    if (diceArr[i].clicked === 0) {
+      diceArr[i].value = Math.floor(Math.random() * 6 + 1);
     }
-  }
-
-  for (let i = 0; i < losingDice.length; i++) {
-    let dieIndex = losingDice[i];
-    diceArr[dieIndex].value = Math.floor(Math.random() * 6 + 1);
   }
   updateDiceImg();
   getScore();
-  document.getElementById("dice-remaining").textContent = losingDice.length;
 }
 
 function updateDiceImg() {
   let diceImage;
   for (let i = 0; i < 6; i++) {
     diceImage = "/img/" + diceArr[i].value + ".png";
-    let diceImg = document.getElementById(diceArr[i].id);
-    diceImg.setAttribute("src", diceImage);
-    if (diceArr[i].winning) {
-      diceImg.style.opacity = 0.5;
-    } else {
-      diceImg.style.opacity = 1;
-    }
+    document.getElementById(diceArr[i].id).setAttribute("src", diceImage);
   }
 }
 
-// Add event listener to the "S'arreter" button
-const stopButton = document.querySelector(".button.bank.column");
-stopButton.addEventListener("click", resetDiceOpacity);
-
-// Function to reset opacity of all dice images to 1
-function resetDiceOpacity() {
-  for (let i = 0; i < 6; i++) {
-    let diceImg = document.getElementById(diceArr[i].id);
-    diceImg.style.opacity = 1;
+function diceClick(img) {
+  let i = img.getAttribute("data-number");
+  img.classList.toggle("transparent");
+  if (diceArr[i].clicked === 0) {
+    diceArr[i].clicked = 1;
+  } else {
+    diceArr[i].clicked = 0;
   }
 }
 
@@ -66,7 +51,6 @@ function getDiceAmounts() {
   return valueArr;
 }
 
-// if there a Farkle then the turn goes to the next player
 function checkForFarkle() {
   let valueArr = getDiceAmounts();
   for (let i = 0; i < 6; i++) {
@@ -79,80 +63,65 @@ function checkForFarkle() {
     }
   }
 
-  alert("FARKLE! Votre tour est fini !");
+  alert("OOOHHH, Nous avons un FARKLE! Votre tour est fini !");
 }
 
-function getScore() {
+function getScore(losingDice) {
   let valueArr = getDiceAmounts();
   let score = 0;
+
+  // Filter out losing dice
+  if (losingDice && losingDice.length > 0) {
+    valueArr = valueArr.filter((_, index) => !losingDice.includes(index + 1));
+  }
 
   // Calculate score
   for (let i = 0; i < 6; i++) {
     if (i == 0 && valueArr[i] >= 3 && valueArr[i] < 6) {
       score += 1000;
-      diceArr[i].winning = true;
-
       if (valueArr[i] - 3 == 1) {
         score += 100;
-        diceArr[i].winning = true;
       } else if (valueArr[i] - 3 == 2) {
         score += 200;
-        diceArr[i].winning = true;
       }
     } else if (i == 0 && valueArr[i] >= 6) {
       score += 2000;
-      diceArr[i].winning = true;
     } else if (i == 0) {
       score += valueArr[i] * 100;
-      diceArr[i].winning = true;
     } else if (i == 4 && valueArr[i] >= 3 && valueArr[i] < 6) {
       score += 500;
-      diceArr[i].winning = true;
-
       if (valueArr[i] - 3 == 1) {
         score += 50;
-        diceArr[i].winning = true;
       } else if (valueArr[i] - 3 == 2) {
         score += 100;
-        diceArr[i].winning = true;
       }
     } else if (i == 4 && valueArr[i] >= 6) {
       score += 1000;
-      diceArr[i].winning = true;
     } else if (i == 4) {
       score += valueArr[i] * 50;
-      diceArr[i].winning = true;
     } else if (i == 1 && valueArr[i] == 3) {
       score += 200;
-      diceArr[i].winning = true;
     } else if (i == 2 && valueArr[i] == 3) {
       score += 300;
-      diceArr[i].winning = true;
     } else if (i == 3 && valueArr[i] == 3) {
       score += 400;
-      diceArr[i].winning = true;
     } else if (i == 5 && valueArr[i] == 3) {
       score += 600;
-      diceArr[i].winning = true;
     } else if (i == 1 && valueArr[i] == 6) {
       score += 400;
-      diceArr[i].winning = true;
     } else if (i == 2 && valueArr[i] == 6) {
       score += 600;
-      diceArr[i].winning = true;
     } else if (i == 3 && valueArr[i] == 6) {
       score += 800;
-      diceArr[i].winning = true;
     } else if (i == 5 && valueArr[i] == 6) {
       score += 1200;
-      diceArr[i].winning = true;
     }
   }
 
   document.getElementById("row-score").innerHTML = score;
 
   if (score == 0) {
-    alert("FARKLE! Votre tour est fini !");
+    alert("OOOOH, nous avons un FARKLE! Votre tour est fini !");
   }
 
   return score;
@@ -186,11 +155,10 @@ function bankScore() {
   let turnNumber = parseInt(turnNumberElement.innerHTML);
   turnNumber += 1;
   turnNumberElement.innerHTML = turnNumber;
-  document.getElementById("dice-remaining").textContent = 6;
 
   // Check for winner
   if (playerScore >= 3000) {
-    let winner = "Player " + currentPlayer;
+    let winner = "Joueur " + currentPlayer;
     alert(winner + " a gagné ! Voulez-vous rejouer ?");
     resetGame();
   }
