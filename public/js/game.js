@@ -4,6 +4,8 @@ console.log("game!");
 let diceArr = [];
 let score = 0;
 let winningDice = [];
+let turnNumberElement = document.getElementById("turn-number");
+let turnNumber = parseInt(turnNumberElement.innerHTML);
 
 // Initialization of dice in objects
 function initializeDice() {
@@ -27,15 +29,32 @@ function rollDice() {
     }
     
     updateDiceImg();
+    /*updateDiceBackground();*/
     getScore();
 }
 
 // Change dice image when rolling dice
-function updateDiceImg() {
+/*function updateDiceImg() {
     let diceImage;
     for (let i = 0; i < 6; i++) {
         diceImage = "/img/" + diceArr[i].value + ".png";
         document.getElementById(diceArr[i].id).setAttribute("src", diceImage);
+    }
+}*/
+
+function updateDiceImg() {
+    let diceImage;
+    for (let i = 0; i < 6; i++) {
+        if (diceArr[i].winning && turnNumber >= 1) {
+          diceImage = "/img/" + diceArr[i].value + "-barre.png";
+          let die = document.getElementById(diceArr[i].id);
+          die.setAttribute("src", diceImage);
+
+        } else {
+          diceImage = "/img/" + diceArr[i].value + ".png";    
+          let die = document.getElementById(diceArr[i].id);
+          die.setAttribute("src", diceImage);    
+        }
     }
 }
 
@@ -76,6 +95,16 @@ function checkForFarkle() {
   alert("FARKLE! Votre tour est fini !");
 }
 
+// Update the background of winning dice
+/*function updateDiceBackground() {
+    for (let i = 0; i < 6; i++) {
+      if (diceArr[i].winning) {
+        document.getElementById(diceArr[i].id).style.backgroundColor = "gray";
+      } else {
+        document.getElementById(diceArr[i].id).style.backgroundColor = "white";
+      }
+    }
+}*/
 
 function getScore() {
     let valueArr = getDiceAmounts();
@@ -195,8 +224,7 @@ function bankScore() {
     playerScore += currentScore;
     playerScoreElement.innerHTML = playerScore;
 
-    let turnNumberElement = document.getElementById("turn-number");
-    let turnNumber = parseInt(turnNumberElement.innerHTML);
+
     turnNumber += 1;
     turnNumberElement.innerHTML = turnNumber;
 
@@ -206,6 +234,14 @@ function bankScore() {
         alert(winner + " a gagné ! Voulez-vous rejouer ?");
         resetGame();
     }
+
+    let diceImage;
+    for (let i = 0; i < 6; i++) {
+        diceImage = "/img/" + diceArr[i].value + ".png";    
+        let die = document.getElementById(diceArr[i].id);
+        die.setAttribute("src", diceImage);    
+    } 
+
 
 }
 
