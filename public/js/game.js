@@ -115,95 +115,100 @@ function getScore() {
 
   // Calculate score
   for (let i = 0; i < 6; i++) {
-      if (i == 0 && valueArr[i] >= 3 && valueArr[i] < 6) { //the case where the player rolls three 1's, and additional points are awarded if the player rolls additional 1's beyond that
+    switch (i) {
+      case 0:
+        if (valueArr[i] >= 3 && valueArr[i] < 6) {
           score += 1000;
           diceArr[i].winning = true;
 
           if (valueArr[i] - 3 == 1) {
-              score += 100;
-              diceArr[i].winning = true;
-
+            score += 100;
+            diceArr[i].winning = true;
           } else if (valueArr[i] - 3 == 2) {
-              score += 200;
-              diceArr[i].winning = true;
-
+            score += 200;
+            diceArr[i].winning = true;
           }
-
-      } else if (i == 0 && valueArr[i] >= 6) {
+        } else if (valueArr[i] >= 6) {
           score += 2000;
           diceArr[i].winning = true;
-
-
-      } else if (i == 0) {
+        } else {
           score += valueArr[i] * 100;
           diceArr[i].winning = true;
+        }
+        break;
 
+      case 1:
+        if (valueArr[i] == 3) {
+          score += 200;
+          diceArr[i].winning = true;
+        } else if (valueArr[i] == 6) {
+          score += 400;
+          diceArr[i].winning = true;
+        }
+        break;
 
-      } else if (i == 4 && valueArr[i] >= 3 && valueArr[i] < 6) {
+      case 2:
+        if (valueArr[i] == 3) {
+          score += 300;
+          diceArr[i].winning = true;
+        } else if (valueArr[i] == 6) {
+          score += 600;
+          diceArr[i].winning = true;
+        }
+        break;
+
+      case 3:
+        if (valueArr[i] == 3) {
+          score += 400;
+          diceArr[i].winning = true;
+        } else if (valueArr[i] == 6) {
+          score += 800;
+          diceArr[i].winning = true;
+        }
+        break;
+
+      case 4:
+        if (valueArr[i] >= 3 && valueArr[i] < 6) {
           score += 500;
           diceArr[i].winning = true;
 
           if (valueArr[i] - 3 == 1) {
-              score += 50;
-              diceArr[i].winning = true;
-
+            score += 50;
+            diceArr[i].winning = true;
           } else if (valueArr[i] - 3 == 2) {
-              score += 100;
-              diceArr[i].winning = true;
-
+            score += 100;
+            diceArr[i].winning = true;
           }
-
-      } else if (i == 4 && valueArr[i] >= 6) {
+        } else if (valueArr[i] >= 6) {
           score += 1000;
           diceArr[i].winning = true;
-
-      } else if (i == 4) {
+        } else {
           score += valueArr[i] * 50;
           diceArr[i].winning = true;
+        }
+        break;
 
-      } else if (i == 1 && valueArr[i] == 3) {
-          score += 200;
-          diceArr[i].winning = true;
-
-      } else if (i == 2 && valueArr[i] == 3) {
-          score += 300;
-          diceArr[i].winning = true;
-
-      } else if (i == 3 && valueArr[i] == 3) {
-          score += 400;
-          diceArr[i].winning = true;
-
-      } else if (i == 5 && valueArr[i] == 3) {
+      case 5:
+        if (valueArr[i] == 3) {
           score += 600;
           diceArr[i].winning = true;
-
-      } else if (i == 1 && valueArr[i] == 6) {
-          score += 400;
-          diceArr[i].winning = true;
-
-      } else if (i == 2 && valueArr[i] == 6) {
-          score += 600;
-          diceArr[i].winning = true;
-
-      } else if (i == 3 && valueArr[i] == 6) {
-          score += 800;
-          diceArr[i].winning = true;
-
-      } else if (i == 5 && valueArr[i] == 6) {
+        } else if (valueArr[i] == 6) {
           score += 1200;
           diceArr[i].winning = true;
-
-      }
+        }
+        break;
+    }
   }
 
   document.getElementById("row-score").innerHTML = score;
 
   if (score == 0) {
-      alert("FARKLE! Votre tour est fini !");
+    alert("FARKLE! Votre tour est fini !");
   }
 
   return score;
 }
+
 
 /*function getScore() {
   let valueArr = getDiceAmounts();
